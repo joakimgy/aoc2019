@@ -35,11 +35,7 @@ def task2():
     for group in answersOfGroups():
         allAnswerYes = 0
         for question in string.ascii_lowercase:
-            yesCount = 0
-            for answer in group:
-                if question in answer:
-                    yesCount += 1
-            if (yesCount == len(group)):
+            if (all([question in person for person in group])):
                 allAnswerYes += 1
         totalAllYesAnswers += allAnswerYes
     return totalAllYesAnswers
