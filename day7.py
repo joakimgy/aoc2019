@@ -13,7 +13,10 @@ def getRules():
     return ruleDict
 
 
-def getBagContent(rules, bagColor):
+rules = getRules()
+
+
+def getBagContent(bagColor):
     content = rules[bagColor]
     if (content == "no other bags."):
         return {}
@@ -25,29 +28,34 @@ def getBagContent(rules, bagColor):
     return colorCapacityDict
 
 
-def ruleContainsShinyGold(rules, bagColor):
-    content = getBagContent(rules, bagColor)
-    if ("shiny gold" in content):
-        return True
-    else:
+def bagContainsShinyGold(emptyBags, remainingBags):
+    if (not remainingBags):
         return False
+    stillEmpty = []
+    stillRemaining = []
+    for bag in remainingBags:
+        if "shiny gold" in getBagContent(bag):
+            return True
+        if all([b in emptyBags for b in getBagContent(bag)]):
+            continue
+        for content in getBagContent(bag):
+            if content in emptyBags:
+                stillEmpty.append(content)
+            else:
+                stillRemaining.append(content)
+    return bagContainsShinyGold(stillEmpty, stillRemaining)
 
 
 def task1():
-    rules = getRules()
-    bagsWithShinyGold = 0
-    for bagColor in rules:
-        if (ruleContainsShinyGold(rules, bagColor)):
-            bagsWithShinyGold += 1
-            continue
-        for subBagColor in getBagContent(rules, bagColor):
-            if (ruleContainsShinyGold(rules, subBagColor)):
-                print(bagColor, subBagColor)
-                bagsWithShinyGold += 1
-                break
-    return bagsWithShinyGold
-# gold in bagcontent?
-# gold in bagconent of bagcontent?
+    emptyBags = list(filter(lambda bag: getBagContent(bag) == {}, rules))
+    remainingBags = list(
+        filter(lambda bag: bag not in (emptyBags+["shiny gold"]), rules))
+
+    count = 0
+    for bag in remainingBags:
+        if (bagContainsShinyGold(emptyBags, [bag])):
+            count += 1
+    return count
 
 
 def task2():
