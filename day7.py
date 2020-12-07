@@ -58,8 +58,20 @@ def task1():
     return count
 
 
+def numberOfBagsInBag(emptyBags, bag):
+    count = 1
+    if (bag in emptyBags):
+        return 1
+    for content in getBagContent(bag):
+        size = int(getBagContent(bag)[content])
+        count += size * numberOfBagsInBag(emptyBags, content)
+    return count
+
+
 def task2():
-    return "No answer"
+    emptyBags = list(filter(lambda bag: getBagContent(bag) == {}, rules))
+    count = numberOfBagsInBag(emptyBags, "shiny gold")
+    return count - 1
 
 
 print("Task 1 result: ", task1())
