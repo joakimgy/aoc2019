@@ -111,8 +111,7 @@ def task2():
         currentSeatings = moveTask2(currentSeatings)
     stringWithAllSeats = "".join(["".join(row) for row in currentSeatings])
     return stringWithAllSeats.count("#")
-    # return adjacentSeatsGeneric(9, 9, currentSeatings)
 
 
-# print("Task 1 result: ", task1())
+print("Task 1 result: ", task1())
 print("Task 2 result: ", task2())
