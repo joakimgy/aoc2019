@@ -36,45 +36,45 @@ def task1():
 
 def task2():
     coordinateShip = {"x": 0, "y": 0}
-    coordinateWaypoint = {"x": 10, "y": 1}
+    waypoint = {"x": 10, "y": 1}
     for cmd in inputarray:
         if "N" in cmd:
-            coordinateWaypoint["y"] += int(cmd[1:])
+            waypoint["y"] += int(cmd[1:])
         if "S" in cmd:
-            coordinateWaypoint["y"] -= int(cmd[1:])
+            waypoint["y"] -= int(cmd[1:])
         if "E" in cmd:
-            coordinateWaypoint["x"] += int(cmd[1:])
+            waypoint["x"] += int(cmd[1:])
         if "W" in cmd:
-            coordinateWaypoint["x"] -= int(cmd[1:])
+            waypoint["x"] -= int(cmd[1:])
         if "L" in cmd:
             rotation = int(cmd[1:])
-            waypointX = coordinateWaypoint["x"]
-            waypointY = coordinateWaypoint["y"]
+            waypointX = waypoint["x"]
+            waypointY = waypoint["y"]
             if rotation == 90:
-                coordinateWaypoint["x"] = -waypointY
-                coordinateWaypoint["y"] = waypointX
+                waypoint["x"] = -waypointY
+                waypoint["y"] = waypointX
             if rotation == 180:
-                coordinateWaypoint["x"] = -waypointX
-                coordinateWaypoint["y"] = -waypointY
+                waypoint["x"] = -waypointX
+                waypoint["y"] = -waypointY
             if rotation == 270:
-                coordinateWaypoint["x"] = waypointY
-                coordinateWaypoint["y"] = -waypointX
+                waypoint["x"] = waypointY
+                waypoint["y"] = -waypointX
         if "R" in cmd:
             rotation = int(cmd[1:])
-            waypointX = coordinateWaypoint["x"]
-            waypointY = coordinateWaypoint["y"]
+            waypointX = waypoint["x"]
+            waypointY = waypoint["y"]
             if rotation == 90:
-                coordinateWaypoint["x"] = waypointY
-                coordinateWaypoint["y"] = -waypointX
+                waypoint["x"] = waypointY
+                waypoint["y"] = -waypointX
             if rotation == 180:
-                coordinateWaypoint["x"] = -waypointX
-                coordinateWaypoint["y"] = -waypointY
+                waypoint["x"] = -waypointX
+                waypoint["y"] = -waypointY
             if rotation == 270:
-                coordinateWaypoint["x"] = -waypointY
-                coordinateWaypoint["y"] = waypointX
+                waypoint["x"] = -waypointY
+                waypoint["y"] = waypointX
         if "F" in cmd:
-            coordinateShip["x"] += int(cmd[1:])*coordinateWaypoint["x"]
-            coordinateShip["y"] += int(cmd[1:])*coordinateWaypoint["y"]
+            coordinateShip["x"] += int(cmd[1:])*waypoint["x"]
+            coordinateShip["y"] += int(cmd[1:])*waypoint["y"]
 
     return abs(coordinateShip["x"]) + abs(coordinateShip["y"])
 
