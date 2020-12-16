@@ -41,63 +41,56 @@ def fieldValidForRule(ticket, rule):
 
 
 def validFields(ticket):
-    invalidFields = {}
     validFields = {}
     for field in ticket:
         validFields[field] = []
-        invalidFields[field] = []
         for rule in rules:
             if (fieldValidForRule(field, rule)):
                 validFields[field].append(rule)
-            else:
-                invalidFields[field].append(rule)
-    return (validFields, invalidFields)
+    for key in validFields:
+        validFields[key] = [field.split(":")[0] for field in validFields[key]]
+    return validFields
 
 
 def task1():
     invalidTickets = []
     i = 0
     for ticket in nearbyTickets:
-        (valid, invalid) = validFields(ticket)
-        for key in valid:
-            if len(valid[key]) == 0:
+        validFieldNames = validFields(ticket)
+        for key in validFieldNames:
+            if len(validFieldNames[key]) == 0:
                 invalidTickets.append(key)
         i += 1
     return sum(invalidTickets)
 
 
 def task2():
-    # ['class', 'row', 'seat']
     ticketFields = [rule.split(":")[0] for rule in rules]
-    # number of fields per ticket
     fieldLen = len(ticketFields)
-    # {1: ['class, row']} means index 1 can be either class or row
-    possibleFields = {}
+    remainingFields = {}
     for i in range(fieldLen):
-        possibleFields[i] = ticketFields
-    # Go through each nearby ticket and update possibleField as we get more information
+        remainingFields[i] = ticketFields
     for ticket in nearbyTickets:
-        (valid, invalid) = validFields(ticket)
+        validFieldNames = validFields(ticket)
         # Check if ticket is invalid
-        invalid = [len(val) == 0 for val in valid.values()]
-        if any(invalid):
+        invalidTicket = any(len(val) == 0 for val in validFieldNames.values())
+        if invalidTicket:
             continue
-        # Go through fields a valid ticket
+        # Exclude some for certain indexes
         i = 0
-        for key in valid:
-            fieldsInKey = [field.split(":")[0] for field in valid[key]]
-            possibleFields[i] = list(
-                filter(lambda x: x in fieldsInKey, possibleFields[i]))
+        for okFields in validFieldNames.values():
+            remainingFields[i] = list(
+                filter(lambda x: x in okFields, remainingFields[i]))
             i += 1
     # sort after size
-    sortedFields = sorted(possibleFields, key=lambda k: len(
-        possibleFields[k]))
+    sortedFields = sorted(remainingFields, key=lambda k: len(
+        remainingFields[k]))
     # DEBUG
     for k in sortedFields:
-        possibilities = possibleFields[k]
+        possibilities = remainingFields[k]
         if(len(possibilities) < 7):
             print(k, possibilities)
-    return ""
+    return remainingFields
 
 
 print("Task 1: ", task1())
