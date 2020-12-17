@@ -7,21 +7,22 @@ initialState = {}
 for x in range(len(inputarray)):
     for y in range(len(inputarray[0])):
         if inputarray[x][y] == "#":
-            initialState[(x,y,0)] = "#"
+            initialState[(x,y,0, 0)] = "#"
 
 def isActive(location, state):
-    (x,y,z) = location
-    return (x,y,z) in state
+    (x,y,z,w) = location
+    return (x,y,z,w) in state
 
 # TODO
 def adjacentCoordinates(coordinate):
-    (x, y, z) = coordinate
+    (x, y, z, w) = coordinate
     adjacent = []
     for xi in range(x-1, x+2):
         for yi in range(y-1, y+2):
             for zi in range(z-1, z+2):
-                adjacent.append((xi, yi, zi))
-    adjacent.remove((x, y, z))
+                for wi in range(w-1, w+2):
+                    adjacent.append((xi, yi, zi, wi))
+    adjacent.remove((x, y, z, w))
     return adjacent
 
 
@@ -53,11 +54,11 @@ def move(state):
             
 
 #
-def task1():
+def task2():
     state = initialState
     for cycle in range(0, 6):
         state = move(state)
     return len(state)
     
 
-print("Task 1:" , task1())
+print("Task 2:" , task2())
