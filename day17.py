@@ -1,4 +1,5 @@
 import copy
+
 filename = "day17input.txt"
 with open(filename) as f:
     inputarray = [line.rstrip() for line in f]
@@ -7,13 +8,14 @@ initialState = {}
 for x in range(len(inputarray)):
     for y in range(len(inputarray[0])):
         if inputarray[x][y] == "#":
-            initialState[(x,y,0)] = "#"
+            initialState[(x, y, 0)] = "#"
+
 
 def isActive(location, state):
-    (x,y,z) = location
-    return (x,y,z) in state
+    (x, y, z) = location
+    return (x, y, z) in state
 
-# TODO
+
 def adjacentCoordinates(coordinate):
     (x, y, z) = coordinate
     adjacent = []
@@ -32,7 +34,7 @@ def activeNeighbors(coordinate, state):
             active.append(coord)
     return active
 
-# TODO
+
 def move(state):
     nextState = copy.deepcopy(state)
     for coordinate in state:
@@ -50,14 +52,12 @@ def move(state):
                 nextState[coord] = "#"
     return nextState
 
-            
 
-#
 def task1():
     state = initialState
     for cycle in range(0, 6):
         state = move(state)
     return len(state)
-    
 
-print("Task 1:" , task1())
+
+print("Task 1:", task1())
